@@ -2,6 +2,9 @@
 
 namespace App\Spiders;
 
+use App\Models\Analyze;
+use App\Models\File;
+
 /**
  * Spider to consumer informations from .env = SPIDER_CNPQ
  */
@@ -44,15 +47,30 @@ class CnpqSpider extends BaseSpider implements ISpider
 		$files = $row->filter('.download-list li a');
 		foreach ($files as $k => $file) {
 			$link = $this->parse($file);
-			$files_list['files'][$k]['name'] = trim($link->text());
-			$files_list['files'][$k]['file'] = $file_base_url . $link->attr('href');
+			$files_list[$k]['name'] = trim($link->text());
+			$files_list[$k]['file'] = $file_base_url . $link->attr('href');
 		}
 		return $files_list;
 	}
 
+	function fillFiles($files)
+	{
+		$files_obj = [];
+		foreach ($files as $file) {
+			$files_obj[] = (new File)->fill($file);
+		}
+		return $files_obj;
+	}
+
 	function save($data)
 	{
-		dd('CnpqSpider@save: ', $data);
+		$files = $this->fillFiles(array_pull($data,'files'));
+		$hash = md5(json_encode($data, true));
+		array_set($data, 'hash', $hash);
+		$analyze = Analyze::firstOrNew(compact('hash'));
+		if ($analyze->exists == false and ($analyze->fill($data))->save()) {
+			$analyze->files()->saveMany($files);
+		}
 	}
 
 	function run()
