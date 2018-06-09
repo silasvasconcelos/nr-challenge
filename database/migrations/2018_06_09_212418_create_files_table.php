@@ -17,7 +17,7 @@ class CreateFilesTable extends Migration
             $table->increments('id');
             $table->integer('analyze_id');
             $table->string('name', 200);
-            $table->string('file', 100);
+            $table->string('file', 1000);
             $table->timestamps();
         });
     }
