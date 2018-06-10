@@ -11,11 +11,11 @@ use GuzzleHttp\Client;
  */
 class BaseSpider
 {
-	private $httClient;
+	private $http_client;
 
 	function __construct()
 	{
-		$this->httClient = new Client;	
+		$this->http_client = new Client;	
 	}
 
 	public function getEnvURL(string $env_name) : string
@@ -47,7 +47,7 @@ class BaseSpider
 
 	function request(string $url, string $method, array $options=[])
 	{
-		$res = $this->httClient->request($method, $url, $options);
+		$res = $this->http_client->request($method, $url, $options);
 		if ($res->getStatuscode() !== 200) {
 			return;
 		}
