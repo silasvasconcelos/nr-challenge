@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
+Route::get('/verify', ['as' => 'dashboard.verify', 'uses' => 'DashboardController@verify']);
+Route::post('/start-crawlers', ['as' => 'dashboard.start_crawlers', 'uses' => 'DashboardController@startCrawlers']);
