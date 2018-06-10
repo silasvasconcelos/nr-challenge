@@ -4,6 +4,7 @@ namespace App\Spiders;
 
 use Symfony\Component\DomCrawler\Crawler;
 use GuzzleHttp\Client;
+use App\Models\File;
 
 
 /**
@@ -57,6 +58,15 @@ class BaseSpider
 	function parse($toParse) : Crawler
 	{
 		return new Crawler($toParse);
+	}
+
+	function fillFiles($files)
+	{
+		$files_obj = [];
+		foreach ($files as $file) {
+			$files_obj[] = (new File)->fill($file);
+		}
+		return $files_obj;
 	}
 
 }

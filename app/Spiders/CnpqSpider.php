@@ -53,15 +53,6 @@ class CnpqSpider extends BaseSpider implements ISpider
 		return $files_list;
 	}
 
-	function fillFiles($files)
-	{
-		$files_obj = [];
-		foreach ($files as $file) {
-			$files_obj[] = (new File)->fill($file);
-		}
-		return $files_obj;
-	}
-
 	function save($data)
 	{
 		$files = $this->fillFiles(array_pull($data,'files'));
