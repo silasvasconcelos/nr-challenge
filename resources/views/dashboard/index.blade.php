@@ -83,11 +83,11 @@
 			url = tbody.data('url'),
 			total_crawlers = $('#total-crawlers');
 		setInterval(function () {
-			tbody.find('tr').remove();
 			$.getJSON(url, function (data) {
 				if (typeof data.total != "undefined") {
 					total_crawlers.text(data.total);
 				}
+				tbody.find('tr').remove();
 				if (typeof data.crawlers != "undefined" && data.crawlers.length > 0) {
 					$.each(data.crawlers, function (k, i) {
 							tbody.prepend(`<tr>
