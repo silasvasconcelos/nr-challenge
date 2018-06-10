@@ -75,9 +75,28 @@ class CnpqSpider extends BaseSpider implements ISpider
 
 	function run()
 	{
-		$crawler = $this->parse($this->get($this->getTarget()));
-		foreach ($crawler->filter('#formLicit tbody tr') as $row) {
-			$this->save($this->extraxtRow($row));
+		try {
+			$page = 1;
+			$num_pages = 1;
+			$base_url = $this->getTarget() . '?pagina=%s&p_p_id=licitacoescnpqportlet_WAR_licitacoescnpqportlet_INSTANCE_BHfsvMBDwU0V';
+			$checked_btn_last_pages = false;
+			while ($page <= $num_pages) {
+				$crawler = $this->parse($this->get( sprintf($base_url, $page) ));
+				
+				if (!$checked_btn_last_pages) {
+					$btn_last_page = $crawler->filter("#formLicit ul.lfr-pagination-buttons li.last a")->first()->attr('onclick');
+					$num_pages = intval(preg_replace('/\D/', '', $btn_last_page));
+					$checked_btn_last_pages = true;
+				}
+				
+				foreach ($crawler->filter('#formLicit tbody tr') as $row) {
+					$this->save($this->extraxtRow($row));
+				}
+				
+				$page += 1;
+			}
+		} catch (\Exception $e) {
+			\Log::error($e);
 		}
 	}
 
