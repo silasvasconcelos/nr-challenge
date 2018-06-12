@@ -6,9 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Spiders\CnpqSpider;
+use App\Spiders\SspDFSpider;
 
-class WebCrawlers implements ShouldQueue
+class WebCrawlerSspDFSpider implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
@@ -28,6 +28,6 @@ class WebCrawlers implements ShouldQueue
      */
     public function handle()
     {
-        (new CnpqSpider)->run();
+        (new SspDFSpider)->run();
     }
 }
