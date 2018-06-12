@@ -21,20 +21,24 @@
 	
 	<div class="row custom-row">
 		
-		<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 			<div class="card">
 			  <div class="card-header">
 			    Number of records
 			  </div>
 			  <div class="card-body">
 			    <blockquote class="blockquote mb-0">
-			      <div class="number-records" id="total-crawlers">{!! $total_crawlers !!}</div>
+			      <div class="number-records d-none" id="total-crawlers">{!! $total_crawlers !!}</div>
 			    </blockquote>
+
+			    <div id="piechart" style="width: 100%; height: auto;"></div>
+			  
 			  </div>
 			</div>
+			<button type="button" class="btn btn-success col-md-12" style="margin-top: 20px;" id="btn-start" data-url="{{ route('dashboard.start_crawlers') }}">Start service</button>
 		</div>
 
-		<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+		<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 			<div class="table-responsive">
 
 				<table class="table table-sm">
@@ -64,7 +68,6 @@
 				</table>
 			</div>
 
-			<button type="button" class="btn btn-success btn-md right" id="btn-start" data-url="{{ route('dashboard.start_crawlers') }}">Start</button>
 		</div>
 	</div>
 
@@ -72,6 +75,30 @@
 
 @section('js')
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+		var data_chart_header = ['Origin', 'Number of records'],
+			data_chart = [data_chart_header];
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable(data_chart);
+
+        var options = {
+          // title: 
+          is3D: true
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+        $('#total-crawlers').removeClass('d-none');
+      }
+      drawChart();
+</script>
 <script type="text/javascript">
 	$(function () {
 		
@@ -86,6 +113,13 @@
 			$.getJSON(url, function (data) {
 				if (typeof data.total != "undefined") {
 					total_crawlers.text(data.total);
+				}
+				if (typeof data.chart != "undefined") {
+					data_chart = [data_chart_header];
+					$.each(data.chart, function (l,v) {
+						data_chart.push([l,v]);
+					});
+					drawChart();
 				}
 				tbody.find('tr').remove();
 				if (typeof data.crawlers != "undefined" && data.crawlers.length > 0) {
