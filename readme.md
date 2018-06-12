@@ -20,6 +20,7 @@ enter into the folder: `cd nr-challenge`
 generate APP_KEY: `php artisan key:generate`
 install packages with composer: `composer install`
 configurer your Redis and MariaDB connection on .env
+
 *MariaDB*
 
     DB_CONNECTION=mysql
@@ -34,6 +35,8 @@ configurer your Redis and MariaDB connection on .env
     REDIS_HOST=127.0.0.1
     REDIS_PASSWORD=null
     REDIS_PORT=6379
+
+Run migrations: `php artisan migrate`
 
 Run lavel queue's: `php artisan queue:work --timeout=1800 --timeout=1800 --sleep=3 --tries=3`
 
