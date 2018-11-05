@@ -15,11 +15,12 @@ Project to test made in laravel 5.3
 *Guzzle is a PHP HTTP client that makes it easy to send HTTP requests and trivial to integrate with web services.*
 
 **Deploy:**
-clone this repository: `git clone https://github.com/silasvasconcelos/nr-challenge` 
-enter into the folder: `cd nr-challenge`
-generate APP_KEY: `php artisan key:generate`
-install packages with composer: `composer install`
-configurer your Redis and MariaDB connection on .env
+clone this repository: `git clone https://github.com/silasvasconcelos/nr-challenge` <br />
+enter into the folder: `cd nr-challenge`<br />
+copy env.example to .env: `php -r "copy('.env.example', '.env');"`<br />
+generate APP_KEY: `php artisan key:generate`<br />
+install packages with composer: `composer install`<br />
+configurer your Redis and MariaDB connection on .env<br />
 
 *MariaDB*
 
